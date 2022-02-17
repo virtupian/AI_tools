@@ -12,6 +12,7 @@ import festival
 import speech_recognition as sr
 import os
 import datetime
+import sys
 
 ALERT="hello"
 CMD1="repeat"
@@ -19,24 +20,29 @@ CMD2="new"
 CMD3="cash"
 CMD4="credit"
 CMD5="complete"
+cmdlist = [CMD1,CMD2,CMD3,CMD4,CMD5]
+
+if len(sys.argv) > 1:
+	encodingname = str(sys.argv[1]) + "-encodings.pickle"
+else:
+	encodingname = "encodings.pickle"
 
 #Determine faces from encodings.pickle file model created from train_model.py
-encodingsP = "encodings.pickle"
-
+encodingsP = "encodings/" + encodingname
+print "Encoding file: "+ encodingsP
 
 def identifyFace():
 	# load the known faces and embeddings along with OpenCV's Haar
 	# cascade for face detection
-        encodingsP = "encodings.pickle"
-        print("[INFO] loading encodings + face detector...")
+        print("Loading facial recognition app...")
 	data = pickle.loads(open(encodingsP, "rb").read())
 
 	# initialize the video stream and allow the camera sensor to warm up
 	# Set the ser to the followng
 	# src = 0 : for the build in single web cam, could be your laptop webcam
 	# src = 2 : I had to set it to 2 inorder to use the USB webcam attached to my laptop
-	vs = VideoStream(src=0,framerate=10).start()
-	time.sleep(2.0)
+	vs = VideoStream(src=0,framerate=15).start()
+	time.sleep(1.0)
 
 	# start the FPS counter
 	fps = FPS().start()
@@ -85,7 +91,7 @@ def identifyFace():
 			#If someone in your dataset is identified, print their name on the screen
                         if currentname != name:
 				currentname = name
-				print(currentname)
+                                print("Recognised face: " + currentname)
                                 
 		# update the list of names
 		names.append(name)
@@ -104,9 +110,10 @@ def identifyFace():
 		key = cv2.waitKey(1) & 0xFF
 
 		#Exit when face is recognised or time exceeded
-		if currentname != "unknown":
+		if counter > 5 and currentname != "unknown":
 			break;
-		elif counter > 100:
+		elif counter > 10:
+                        print("Failed to recognise face")
 			break;
 		counter = counter + 1
 
@@ -115,8 +122,6 @@ def identifyFace():
 
 	# stop the timer and display FPS information
 	fps.stop()
-	print("[INFO] elasped time: {:.2f}".format(fps.elapsed()))
-	print("[INFO] approx. FPS: {:.2f}".format(fps.fps()))
 
 	# do a bit of cleanup
 	cv2.destroyAllWindows()
@@ -127,15 +132,17 @@ def identifyFace():
 def listen4Alert():
     while True:
         r = sr.Recognizer()
+        print("Listening...")
         with sr.Microphone() as source:
-            audio_data = r.record(source, duration=4)
-            print("Listening...")
+            audio_data = r.record(source, duration=2)
             try:
                 text = r.recognize_google(audio_data)
             except:
                 text = ""
             del(r)
+            print("Detected voice input...")
             if text.find(ALERT)!=-1:
+                print("Alert command recognised: " + ALERT)
                 return True
 
 def parseCMD():
@@ -152,33 +159,33 @@ def parseCMD():
         return text
 
 def repeatCMD():
-	return "Thanks. I see that last time you ordered a sandwich with fries, and a white coffee. If you would like to pay for that with the credit card we have on record, say credit"
+	return "Thanks. I see that last time you ordered a sandwich with fries, and a white coffee. If you would like to pay for that with the credit card we have on record, please say credit, otherwise please say other"
 
 def newCMD():
-	festival.sayText("Thanks. What would you like to order?")
+	festival.sayText("What would you like to order?")
 	str2=parseCMD()
 	str3="Great. Your order of " + str2 + " is coming right up. Please drive to the cashier at booth 3 to pay. Next time we can keep your auto payment details on file so it's quicker to checkout."
 	return str3
 
 def creditCMD():
-	return "Great. Thats been processed now. You have earned a hundred loyalty points today with this transaction."
+	return "Great. Thats been processed now. You have earned a hundred loyalty points today with this transaction. Please drive to the pickup point, your order will be with you momentarily."
 
 def processCMD(txt):
     if txt.find(CMD1)!=-1:
-        return repeatCMD()
+	    return repeatCMD()
     elif txt.find(CMD2)!=-1:
-        return newCMD()
+	    return newCMD()
     elif txt.find(CMD3)!=-1:
-        return cashCMD()
+	    return cashCMD()
     elif txt.find(CMD4)!=-1:
-        return creditCMD()
+	    return creditCMD()
     elif txt.find(CMD5)!=-1:
-        return completeCMD()
+	    return completeCMD()
 
 while True:
     if listen4Alert()==True:
 	    #First run facial security check to see if we know the person
-	    festival.sayText('hello, bear me with a moment while we check our records')
+	    festival.sayText("Hello. Please bear with me for a moment while we check our records")
 	    name = identifyFace()
 	    
 	    if name == 'unknown':
@@ -187,17 +194,30 @@ while True:
 		    festival.sayText('Thank you')
 		    festival.sayText(name)
 		    festival.sayText('We have updated our records')
-		    festival.sayText('What can I get for you today?')
 		    rsp = processCMD('new')
 		    festival.sayText(rsp)
 	    else:
 		    festival.sayText('Welcome back')
 		    festival.sayText(name)
 		    festival.sayText('please select one of the following options, repeat or new order')
-		    v = parseCMD()
+		    while True:
+			    v = parseCMD()
+			    if v not in cmdlist:
+				    festival.sayText('Please select an action from the following list')
+				    for v in cmdlist:
+					    festival.sayText(v)
+			    else:
+				    break
 		    rsp = processCMD(v)
 		    festival.sayText(rsp)
-                    v = parseCMD()
+                    while True:
+                            v = parseCMD()
+                            if v not in cmdlist:
+                                    festival.sayText('Please select an action from the following list')
+                                    forv in cmdlist:
+                                            festival.sayText(v)
+                            else:
+                                    break
                     rsp = processCMD(v)
                     festival.sayText(rsp)
 	    festival.sayText("Thanks for visiting today")
