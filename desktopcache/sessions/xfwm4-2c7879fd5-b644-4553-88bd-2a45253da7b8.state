@@ -1,39 +1,26 @@
-[CLIENT] 0x44001b9
+[CLIENT] 0x200001d
   [CLIENT_ID] 21b9ec4b4-0894-4359-ae1b-ace3e99d6844
-  [CLIENT_LEADER] 0x4400001
-  [WINDOW_ROLE] xfce4-terminal-1645105075--607284948
-  [RES_NAME] xfce4-terminal
-  [RES_CLASS] Xfce4-terminal
-  [WM_NAME] Terminal - ubuntu@instance-60: ~
-  [WM_COMMAND] (1) "xfce4-terminal"
-  [GEOMETRY] (840,60,657,435)
-  [GEOMETRY-MAXIMIZED] (840,60,657,435)
-  [SCREEN] 0
-  [DESK] 0
-  [FLAGS] 0x10000
-[CLIENT] 0x44001ee
-  [CLIENT_ID] 21b9ec4b4-0894-4359-ae1b-ace3e99d6844
-  [CLIENT_LEADER] 0x4400001
-  [WINDOW_ROLE] xfce4-terminal-1645105080--1821099466
-  [RES_NAME] xfce4-terminal
-  [RES_CLASS] Xfce4-terminal
-  [WM_NAME] Terminal - ubuntu@instance-60: ~
-  [WM_COMMAND] (1) "xfce4-terminal"
-  [GEOMETRY] (841,499,657,435)
-  [GEOMETRY-MAXIMIZED] (841,499,657,435)
-  [SCREEN] 0
-  [DESK] 0
-  [FLAGS] 0x10000
-[CLIENT] 0x4400005
-  [CLIENT_ID] 21b9ec4b4-0894-4359-ae1b-ace3e99d6844
-  [CLIENT_LEADER] 0x4400001
+  [CLIENT_LEADER] 0x2000001
   [WINDOW_ROLE] xfce4-terminal-1645105006--1806120021
   [RES_NAME] xfce4-terminal
   [RES_CLASS] Xfce4-terminal
   [WM_NAME] Terminal - ubuntu@instance-60: ~
   [WM_COMMAND] (1) "xfce4-terminal"
-  [GEOMETRY] (181,248,657,435)
-  [GEOMETRY-MAXIMIZED] (181,248,657,435)
+  [GEOMETRY] (182,99,657,682)
+  [GEOMETRY-MAXIMIZED] (182,99,657,418)
+  [SCREEN] 0
+  [DESK] 0
+  [FLAGS] 0x10000
+[CLIENT] 0x2000017
+  [CLIENT_ID] 21b9ec4b4-0894-4359-ae1b-ace3e99d6844
+  [CLIENT_LEADER] 0x2000001
+  [WINDOW_ROLE] xfce4-terminal-1645105075--607284948
+  [RES_NAME] xfce4-terminal
+  [RES_CLASS] Xfce4-terminal
+  [WM_NAME] Terminal - ubuntu@instance-60: ~
+  [WM_COMMAND] (1) "xfce4-terminal"
+  [GEOMETRY] (842,274,657,359)
+  [GEOMETRY-MAXIMIZED] (842,274,657,421)
   [SCREEN] 0
   [DESK] 0
   [FLAGS] 0x10000
