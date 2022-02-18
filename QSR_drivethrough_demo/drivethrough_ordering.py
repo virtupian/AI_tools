@@ -214,7 +214,7 @@ while True:
                             v = parseCMD()
                             if v not in cmdlist:
                                     festival.sayText('Please select an action from the following list')
-                                    forv in cmdlist:
+                                    for v in cmdlist:
                                             festival.sayText(v)
                             else:
                                     break
